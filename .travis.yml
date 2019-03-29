@@ -1,0 +1,64 @@
+dist: trusty
+os: linux
+language: minimal
+cache:
+  ccache: true
+  directories:
+    - $HOME/.ccache
+git:
+  quiet: true
+
+branches:
+  only:
+  - master
+  - dev
+
+stages:
+  - test
+env:
+  global:
+    - MAKEJOBS=-j3
+    - RUN_UNIT_TESTS=false
+    - RUN_FUNCTIONAL_TESTS=true
+    - CCACHE_SIZE=100M
+    - CCACHE_TEMPDIR=/tmp/.ccache-temp
+    - CCACHE_COMPRESS=1
+    - CCACHE_DIR=$HOME/.ccache
+    - BASE_OUTDIR=$TRAVIS_BUILD_DIR/out
+    # - MAGNACHAIN = $TRAVIS_BUILD_DIR/src/magnachaind
+    # - MAGNACHAIN-SIDE = $TRAVIS_BUILD_DIR/src/magnachaind-side
+    # - MAGNACHAIN-CLI = $TRAVIS_BUILD_DIR/src/magnachain-cli
+before_install:
+  - sudo apt-get install libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils -y
+  - sudo apt-get install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libboost-iostreams-dev -y
+  - sudo apt-get install software-properties-common -y
+  - sudo add-apt-repository ppa:bitcoin/bitcoin -y
+  - sudo apt-get update
+  - sudo apt-get install libdb4.8-dev libdb4.8++-dev -y
+  - sudo apt-get install libminiupnpc-dev -y
+  - sudo apt-get install libzmq3-dev -y
+  # - set -o errexit; if ! source .travis/test_03_before_install.sh; then set +o errexit; false; fi
+install:
+  true
+  # - set -o errexit; if ! source .travis/test_04_install.sh; then set +o errexit; false; fi
+before_script:
+  - sh ./autogen.sh
+  - sh ./configure
+  - make -j3
+  # - set -o errexit; if ! source .travis/test_05_before_script.sh; then set +o errexit; false; fi
+script:
+  python3 ./MagnaChain-dev-master/test/functional/test_runner.py contract_publish.py
+  # - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; if ! source .travis/test_06_script.sh; then set +o errexit; false; fi; fi
+after_script:
+  # - echo $TRAVIS_COMMIT_RANGE
+  # - echo $TRAVIS_COMMIT_LOG
+# jobs:
+#   include:
+# # x86_64 Linux (uses qt5 dev package instead of depends Qt to speed up build and avoid timeout)
+#     - stage: test
+#       env: >-
+#         HOST=x86_64-unknown-linux-gnu
+#         PACKAGES="python3-zmq qtbase5-dev qttools5-dev-tools protobuf-compiler libdbus-1-dev libharfbuzz-dev libprotobuf-dev"
+#         DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1 ALLOW_HOST_PACKAGES=1"
+#         GOAL="install"
+#         BITCOIN_CONFIG="--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug CXXFLAGS=\"-g0 -O2\""
