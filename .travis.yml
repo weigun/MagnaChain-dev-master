@@ -58,4 +58,12 @@ jobs:
     - stage: test
       name: contract test
       script: 
-        python3 ./test/functional/test_runner.py contract_publish.py
+        python3 ./test/functional/test_runner.py contract_publish.py contract_call.py
+
+      name: sidechain test
+      script: 
+        python3 ./test/functional/test_runner.py sidechain_setup.py
+
+      name: normal test
+      script: 
+        python3 ./test/functional/test_runner.py mempool_limit.py
