@@ -559,7 +559,7 @@ class RPCCoverage(object):
 
 
 if __name__ == '__main__':
-    try：
+    try:
         main()
     except Exception as e:
         print(e)
