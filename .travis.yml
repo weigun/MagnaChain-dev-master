@@ -45,20 +45,19 @@ before_script:
   - sh ./autogen.sh
   - sh ./configure
   - make -j3
+  - chmod -R +x ./test/functional
+  - ls -al ./test
+  - cat ./test/config.ini
   # - set -o errexit; if ! source .travis/test_05_before_script.sh; then set +o errexit; false; fi
-script:
-  python3 ./test/functional/contract_publish.py
+# script:
+#   python3 ./test/functional/contract_publish.py
   # - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; if ! source .travis/test_06_script.sh; then set +o errexit; false; fi; fi
 # after_script:
   # - echo $TRAVIS_COMMIT_RANGE
   # - echo $TRAVIS_COMMIT_LOG
-# jobs:
-#   include:
-# # x86_64 Linux (uses qt5 dev package instead of depends Qt to speed up build and avoid timeout)
-#     - stage: test
-#       env: >-
-#         HOST=x86_64-unknown-linux-gnu
-#         PACKAGES="python3-zmq qtbase5-dev qttools5-dev-tools protobuf-compiler libdbus-1-dev libharfbuzz-dev libprotobuf-dev"
-#         DEP_OPTS="NO_QT=1 NO_UPNP=1 DEBUG=1 ALLOW_HOST_PACKAGES=1"
-#         GOAL="install"
-#         BITCOIN_CONFIG="--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug CXXFLAGS=\"-g0 -O2\""
+jobs:
+  include:
+    - stage: test
+      name: contract test
+      script: 
+        python3 ./test/functional/test_runner.py contract_publish.py
