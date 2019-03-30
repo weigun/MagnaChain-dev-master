@@ -46,8 +46,6 @@ before_script:
   - sh ./configure
   - make -j3
   - chmod -R +x ./test/functional
-  - ls -al ./test
-  - cat ./test/config.ini
   # - set -o errexit; if ! source .travis/test_05_before_script.sh; then set +o errexit; false; fi
 # script:
 #   python3 ./test/functional/contract_publish.py
@@ -60,4 +58,4 @@ jobs:
     - stage: test
       name: contract test
       script: 
-        python3 ./test/functional/test_runner.py contract_publish.py
+        python3 ./test/functional/test_runner.py ./test/functional/contract_publish.py
