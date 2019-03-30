@@ -285,7 +285,12 @@ def main():
         # shutil.rmtree("%s/test/cache" % config["environment"]["BUILDDIR"], ignore_errors=True)
         shutil.rmtree(os.path.join(config["environment"]["BUILDDIR"],'test','cache'), ignore_errors=True)
 
-    run_tests(test_list, config["environment"]["SRCDIR"], config["environment"]["BUILDDIR"], config["environment"]["EXEEXT"], tmpdir, args.jobs, args.coverage, passon_args)
+    print("before run tests")
+    try:
+        run_tests(test_list, config["environment"]["SRCDIR"], config["environment"]["BUILDDIR"], config["environment"]["EXEEXT"], tmpdir, args.jobs, args.coverage, passon_args)
+    except Exception as e:
+        print(e)
+        raise
 
 def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_coverage=False, args=[]):
     # Warn if magnachaind is already running (unix only)
@@ -326,6 +331,7 @@ def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_cove
         # Populate cache
         subprocess.check_output([os.path.join(tests_dir,'create_cache.py')] + flags + ["--tmpdir=%s" % os.path.join(tmpdir,'cache')])
 
+    print("ready run test!!")
     #Run Tests
     job_queue = TestHandler(jobs, tests_dir, tmpdir, test_list, flags)
     time0 = time.time()
