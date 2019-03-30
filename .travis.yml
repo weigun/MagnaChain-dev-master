@@ -15,6 +15,7 @@ branches:
 
 stages:
   - test
+  - done
 env:
   global:
     - MAKEJOBS=-j3
@@ -67,3 +68,6 @@ jobs:
       name: normal test
       script: 
         python3 ./test/functional/test_runner.py mempool_limit.py
+
+    - stage: done
+      script: ps aux|grep magnachaind
