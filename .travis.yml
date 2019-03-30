@@ -47,7 +47,7 @@ before_script:
   - make -j3
   # - set -o errexit; if ! source .travis/test_05_before_script.sh; then set +o errexit; false; fi
 script:
-  python3 ./test/functional/test_runner.py contract_publish.py
+  python3 ./test/functional/contract_publish.py
   # - if [ $SECONDS -gt 1200 ]; then set +o errexit; echo "Travis early exit to cache current state"; false; else set -o errexit; if ! source .travis/test_06_script.sh; then set +o errexit; false; fi; fi
 # after_script:
   # - echo $TRAVIS_COMMIT_RANGE
