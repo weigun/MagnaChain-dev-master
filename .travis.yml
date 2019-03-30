@@ -58,4 +58,4 @@ jobs:
     - stage: test
       name: contract test
       script: 
-        python3 ./test/functional/test_runner.py ./test/functional/contract_publish.py
+        python3 ./test/functional/test_runner.py contract_publish.py
