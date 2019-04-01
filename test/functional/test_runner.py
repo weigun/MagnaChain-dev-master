@@ -429,8 +429,9 @@ class TestHandler:
             time.sleep(.5)
             for j in self.jobs:
                 (name, time0, proc, log_out, log_err) = j
-                if os.getenv('TRAVIS') == 'true' and int(time.time() - time0) > 20 * 60:
-                    # In travis, timeout individual tests after 20 minutes (to stop tests hanging and not
+                if os.getenv('TRAVIS') == 'true' and int(time.time() - time0) > 50 * 60:
+                    print("job run over 50min in TRAVIS,break and kill")
+                    # In travis, timeout individual tests after 50 minutes (to stop tests hanging and not
                     # providing useful output.
                     proc.send_signal(signal.SIGINT)
                 if proc.poll() is not None:
