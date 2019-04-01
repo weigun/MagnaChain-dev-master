@@ -61,10 +61,12 @@ jobs:
       script: 
         python3 ./test/functional/test_runner.py contract_publish.py contract_call.py
 
+    - stage: test
       name: sidechain test
       script: 
         python3 ./test/functional/test_runner.py sidechain_setup.py
 
+    - stage: test
       name: normal test
       script: 
         python3 ./test/functional/test_runner.py mempool_limit.py
