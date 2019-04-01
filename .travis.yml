@@ -44,9 +44,8 @@ before_script:
   - chmod -R +x ./test/functional
   - ccache --max-size=$CCACHE_SIZE
 
-after_script:
-  - echo $TRAVIS_COMMIT_RANGE
-  - echo $TRAVIS_COMMIT_LOG
+# after_script:
+# TODO: commit something
 
 notifications:
   email:
